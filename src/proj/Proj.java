@@ -31,14 +31,25 @@ public class Proj {
 
             System.out.println("Successful connected to MySQL Database");
 
+            System.out.println("\n");
+            
             UsersDao usersDao = new UsersDao(statement);
 
             User userFetched = usersDao.getUser(1);
-             
+
             System.out.println("Exemplo de busca de usuário:");
             System.out.println(userFetched);
+
+            System.out.println("\n");
             
-            System.out.println("Exemplo de atualizazação de usuário");
+            System.out.println("Exemplo de inserção de usuário:");
+            User demoUser = new User("Clodosvaldo", 56);
+            usersDao.createUser(demoUser);
+            System.out.println("Usuário inserido: " + demoUser);
+            
+            System.out.println("\n");
+
+            System.out.println("Exemplo de atualização de usuário");
             usersDao.updateUser(1, new User("Paulo", 29));
             System.out.println("Atualização concluída");
         } catch (SQLException e) {

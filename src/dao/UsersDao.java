@@ -8,6 +8,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 import model.User;
 
 /**
@@ -51,5 +52,24 @@ public class UsersDao {
                 + "WHERE id = '" + id + "'";
 
         statement.executeUpdate(sql);
+    }
+
+    public void createUser(User newUser) throws SQLException {
+        String sql = "INSERT INTO users (name, age, id) VALUES ('"
+                + newUser.getName() + "', '"
+                + newUser.getAge() + "', " + randomInt(500, 20000)
+                + ")";
+
+        statement.executeUpdate(sql);
+    }
+
+    private int randomInt(int min, int max) {
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 }
