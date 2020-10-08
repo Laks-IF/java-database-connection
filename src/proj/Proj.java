@@ -2,9 +2,11 @@ package proj;
 
 import dao.ConnectionFactory;
 import dao.ConnectionConfig;
+import dao.UsersDao;
+
+import model.User;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -29,30 +31,16 @@ public class Proj {
 
             System.out.println("Successful connected to MySQL Database");
 
-            // Query de exemplo, é só um Foo Bar, não tem quase
-            // nada nesse DB remoto, só tem um registro na tabela users:
-            // nome: Douglas
-            // idade: 25
-            // id: 1
-            // Mesmo banco que usei lá no outro trabalho
-            String sql = "SELECT * FROM users";
+            UsersDao usersDao = new UsersDao(statement);
 
-            ResultSet result = statement.executeQuery(sql);
-
-            // iterate through the java resultset
-            while (result.next()) {
-                int id = result.getInt("id");
-                String name = result.getString("name");
-                int age = result.getInt("age");
-
-                // Print the results
-                System.out.format(
-                        "ID: " + id + "\n"
-                        + "Name: " + name + "\n"
-                        + "age: " + age + "\n"
-                );
-                System.out.println("========================");
-            }
+            User userFetched = usersDao.getUser(1);
+             
+            System.out.println("Exemplo de busca de usuário:");
+            System.out.println(userFetched);
+            
+            System.out.println("Exemplo de atualizazação de usuário");
+            usersDao.updateUser(1, new User("Paulo", 29));
+            System.out.println("Atualização concluída");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "SQL Exception" + e.toString());
         }
