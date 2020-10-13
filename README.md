@@ -10,3 +10,4 @@ Ou baixe ele diretamente clicando neste link: https://downloads.mysql.com/archiv
 #### 3.2 Na parte de "bibliotecas" clique com o botão direito e depois em "Adicionar JAR/pasta"
 #### 3.3 Escolha o arquivo zipado no qual fizemos download no passo 2
 #### 3.4 Pronto, aperte em Run
+> **Caso ocorra um erro, tente extrair o arquivo `mysql-connector-java-8.0.17.jar` do zip e importe este arquivo .jar ao invés do .zip no NetBeans! e então tente RUN novamente**
