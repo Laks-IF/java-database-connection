@@ -1,6 +1,5 @@
 package dao;
 
-import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

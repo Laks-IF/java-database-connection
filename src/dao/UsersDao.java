@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 import model.User;
+import shared.Utils;
 
 /**
  *
@@ -21,6 +22,12 @@ public class UsersDao {
 
     public UsersDao(Statement statement) {
         this.statement = statement;
+    }
+
+    private boolean userAlreadyExists(int id) throws SQLException {
+        User userToDelete = this.getUser(id);
+
+        return userToDelete != null;
     }
 
     public User getUser(int id) throws SQLException {
@@ -43,7 +50,11 @@ public class UsersDao {
         return null;
     }
 
-    public void updateUser(int id, User newUser) throws SQLException {
+    public void updateUser(int id, User newUser) throws SQLException, Exception {
+        if (!this.userAlreadyExists(id)) {
+            throw new Exception("Este usuário: " + id + ", não existe");
+        }
+
         String sql = "UPDATE users " + "\n"
                 + "SET name = '"
                 + newUser.getName()
@@ -54,22 +65,25 @@ public class UsersDao {
         statement.executeUpdate(sql);
     }
 
-    public void createUser(User newUser) throws SQLException {
+    public void createUser(User newUser, boolean useImplicityId) throws SQLException {
+        int id = useImplicityId ? newUser.getId() : Utils.randomInt(500, 20000);
+
         String sql = "INSERT INTO users (name, age, id) VALUES ('"
                 + newUser.getName() + "', '"
-                + newUser.getAge() + "', " + randomInt(500, 20000)
+                + newUser.getAge() + "', " + id
                 + ")";
 
         statement.executeUpdate(sql);
     }
 
-    private int randomInt(int min, int max) {
-        Random rand = new Random();
+    public void deleteUser(int id) throws SQLException, Exception {
+        if (!this.userAlreadyExists(id)) {
+            throw new Exception("Este usuário: " + id + ", não existe");
+        }
 
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
+        String sql = "DELETE FROM users" + " WHERE id = " + id;
 
-        return randomNum;
+        statement.executeUpdate(sql);
     }
+
 }
