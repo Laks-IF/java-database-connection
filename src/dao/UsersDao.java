@@ -8,6 +8,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Random;
 import model.User;
 import shared.Utils;
@@ -86,4 +87,25 @@ public class UsersDao {
         statement.executeUpdate(sql);
     }
 
+    public ArrayList<User> getAll() throws SQLException {
+        String sql = "SELECT * FROM users";
+
+        ResultSet result = statement.executeQuery(sql);
+
+        String userName;
+        int userAge;
+        int userId;
+
+        ArrayList<User> results = new ArrayList();
+
+        while (result.next()) {
+            userName = result.getString("name");
+            userAge = result.getInt("age");
+            userId = result.getInt("id");
+
+            results.add(new User(userName, userAge, userId));
+        }
+
+        return results;
+    }
 }
